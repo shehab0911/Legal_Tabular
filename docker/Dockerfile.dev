@@ -1,0 +1,37 @@
+# Development Dockerfile for backend (with debugging)
+FROM python:3.11
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    postgresql-client \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir \
+    uvicorn[standard]==0.24.0 \
+    python-multipart==0.0.6 \
+    gunicorn==21.2.0
+
+# Copy application code
+COPY backend/ /app/
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    DEBUG_MODE=true \
+    LOG_LEVEL=DEBUG
+
+# Create app directory for uploads
+RUN mkdir -p /app/uploaded_files
+
+EXPOSE 8000
+
+# Run with uvicorn for development (hot reload)
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

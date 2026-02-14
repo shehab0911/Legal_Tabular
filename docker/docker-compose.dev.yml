@@ -1,0 +1,104 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: legal_review_dev_db
+    environment:
+      POSTGRES_DB: legal_review_dev
+      POSTGRES_USER: reviewer
+      POSTGRES_PASSWORD: dev_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U reviewer"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - legal_review_dev
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: legal_review_dev_cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - legal_review_dev
+
+  # Backend API (Development mode with hot reload)
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    container_name: legal_review_dev_backend
+    environment:
+      DATABASE_URL: postgresql://reviewer:dev_password@postgres:5432/legal_review_dev
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: DEBUG
+      DEBUG_MODE: "true"
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8001:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../backend:/app
+      - /app/__pycache__
+    networks:
+      - legal_review_dev
+    restart: unless-stopped
+
+  # Frontend (Development mode with hot reload)
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend.dev
+    container_name: legal_review_dev_frontend
+    environment:
+      VITE_API_URL: http://localhost:8001
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - legal_review_dev
+    restart: unless-stopped
+
+  # pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: legal_review_dev_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - legal_review_dev
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+    driver: local
+
+networks:
+  legal_review_dev:
+    driver: bridge

@@ -1,0 +1,103 @@
+{
+  "project_id": "sample-project-001",
+  "document_count": 3,
+  "row_count": 10,
+  "documents": [
+    {"id": "doc-001", "filename": "Supply Agreement.pdf", "file_type": "pdf"},
+    {"id": "doc-002", "filename": "EX-10.2.html", "file_type": "html"},
+    {"id": "doc-003", "filename": "tsla-ex102_486.htm.pdf", "file_type": "pdf"}
+  ],
+  "rows": [
+    {
+      "field_name": "Parties",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-001", "extracted_value": "Tesla, Inc. and Panasonic Energy Co., Ltd.", "normalized_value": "Tesla, Inc.; Panasonic Energy Co., Ltd.", "confidence_score": 0.92, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-002", "extracted_value": "Tesla, Inc. and LG Energy Solution", "normalized_value": "Tesla, Inc.; LG Energy Solution", "confidence_score": 0.88, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-003", "extracted_value": "Tesla, Inc. and CATL", "normalized_value": "Tesla, Inc.; CATL", "confidence_score": 0.85, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Effective Date",
+      "field_type": "DATE",
+      "document_results": {
+        "doc-001": {"id": "ext-004", "extracted_value": "January 1, 2024", "normalized_value": "2024-01-01", "confidence_score": 0.95, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-005", "extracted_value": "March 15, 2024", "normalized_value": "2024-03-15", "confidence_score": 0.93, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-006", "extracted_value": "June 1, 2023", "normalized_value": "2023-06-01", "confidence_score": 0.91, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Term",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-007", "extracted_value": "5 years from the Effective Date, with automatic renewal for successive 1-year periods", "normalized_value": "5 years + auto-renewal (1-year periods)", "confidence_score": 0.87, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-008", "extracted_value": "3 years with option to extend for 2 additional years", "normalized_value": "3 years + 2-year extension option", "confidence_score": 0.84, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-009", "extracted_value": "Initial term of 10 years", "normalized_value": "10 years", "confidence_score": 0.90, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Governing Law",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-010", "extracted_value": "State of Delaware", "normalized_value": "Delaware, USA", "confidence_score": 0.96, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-011", "extracted_value": "State of Delaware", "normalized_value": "Delaware, USA", "confidence_score": 0.94, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-012", "extracted_value": "State of Texas", "normalized_value": "Texas, USA", "confidence_score": 0.88, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Payment Terms",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-013", "extracted_value": "Net 30 days from invoice date", "normalized_value": "Net 30", "confidence_score": 0.82, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-014", "extracted_value": "Net 45 days from delivery acceptance", "normalized_value": "Net 45", "confidence_score": 0.79, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-015", "extracted_value": "Quarterly payments in advance", "normalized_value": "Quarterly advance", "confidence_score": 0.75, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Dispute Resolution",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-016", "extracted_value": "Binding arbitration under the rules of the American Arbitration Association", "normalized_value": "Binding arbitration (AAA)", "confidence_score": 0.89, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-017", "extracted_value": "Mediation followed by binding arbitration in New York", "normalized_value": "Mediation then arbitration (NY)", "confidence_score": 0.86, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-018", "extracted_value": "Exclusive jurisdiction of the courts of Travis County, Texas", "normalized_value": "Litigation (Travis County, TX)", "confidence_score": 0.91, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Confidentiality",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-019", "extracted_value": "Mutual NDA; 5-year survival post-termination", "normalized_value": "Mutual; 5-year survival", "confidence_score": 0.83, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-020", "extracted_value": "Mutual confidentiality; 3-year survival", "normalized_value": "Mutual; 3-year survival", "confidence_score": 0.80, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-021", "extracted_value": "Standard mutual confidentiality provisions", "normalized_value": "Mutual; standard", "confidence_score": 0.72, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Liability Cap",
+      "field_type": "CURRENCY",
+      "document_results": {
+        "doc-001": {"id": "ext-022", "extracted_value": "$50,000,000", "normalized_value": "USD 50,000,000", "confidence_score": 0.91, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-023", "extracted_value": "Limited to total fees paid in the preceding 12 months", "normalized_value": "12-month fees cap", "confidence_score": 0.77, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-024", "extracted_value": "N/A", "normalized_value": "N/A", "confidence_score": 0.40, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Termination",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-025", "extracted_value": "Either party may terminate with 90 days written notice; immediate termination for material breach", "normalized_value": "90-day notice; immediate for breach", "confidence_score": 0.88, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-026", "extracted_value": "60 days written notice; 30-day cure period for breach", "normalized_value": "60-day notice; 30-day cure", "confidence_score": 0.85, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-027", "extracted_value": "180 days advance written notice required", "normalized_value": "180-day notice", "confidence_score": 0.82, "status": "EXTRACTED"}
+      }
+    },
+    {
+      "field_name": "Intellectual Property",
+      "field_type": "TEXT",
+      "document_results": {
+        "doc-001": {"id": "ext-028", "extracted_value": "Each party retains ownership of its pre-existing IP; joint IP developed under the agreement shall be jointly owned", "normalized_value": "Pre-existing retained; joint development jointly owned", "confidence_score": 0.79, "status": "EXTRACTED"},
+        "doc-002": {"id": "ext-029", "extracted_value": "All IP developed under this agreement shall be owned by Tesla", "normalized_value": "Tesla owns developed IP", "confidence_score": 0.86, "status": "EXTRACTED"},
+        "doc-003": {"id": "ext-030", "extracted_value": "Background IP retained; foreground IP licensed to Tesla exclusively", "normalized_value": "Background retained; foreground exclusively licensed to Tesla", "confidence_score": 0.81, "status": "EXTRACTED"}
+      }
+    }
+  ],
+  "generation_timestamp": "2026-02-11T10:30:00.000000"
+}

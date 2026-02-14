@@ -1,0 +1,94 @@
+{
+  "project_id": "sample-project-001",
+  "field_diffs": [
+    {
+      "field_name": "Governing Law",
+      "is_unanimous": false,
+      "majority_value": "Delaware, USA",
+      "majority_count": 2,
+      "total_documents": 3,
+      "unique_values": 2,
+      "value_groups": {
+        "Delaware, USA": ["Supply Agreement.pdf", "EX-10.2.html"],
+        "Texas, USA": ["tsla-ex102_486.htm.pdf"]
+      },
+      "outliers": [
+        {
+          "document": "tsla-ex102_486.htm.pdf",
+          "value": "Texas, USA",
+          "document_id": "doc-003",
+          "confidence": 0.88
+        }
+      ],
+      "document_values": {
+        "Supply Agreement.pdf": {"value": "Delaware, USA", "confidence": 0.96, "document_id": "doc-001"},
+        "EX-10.2.html": {"value": "Delaware, USA", "confidence": 0.94, "document_id": "doc-002"},
+        "tsla-ex102_486.htm.pdf": {"value": "Texas, USA", "confidence": 0.88, "document_id": "doc-003"}
+      },
+      "similarity_pairs": [
+        {"doc_a": "Supply Agreement.pdf", "doc_b": "EX-10.2.html", "similarity": 1.0},
+        {"doc_a": "Supply Agreement.pdf", "doc_b": "tsla-ex102_486.htm.pdf", "similarity": 0.364},
+        {"doc_a": "EX-10.2.html", "doc_b": "tsla-ex102_486.htm.pdf", "similarity": 0.364}
+      ]
+    },
+    {
+      "field_name": "Dispute Resolution",
+      "is_unanimous": false,
+      "majority_value": "Binding arbitration (AAA)",
+      "majority_count": 1,
+      "total_documents": 3,
+      "unique_values": 3,
+      "value_groups": {
+        "Binding arbitration (AAA)": ["Supply Agreement.pdf"],
+        "Mediation then arbitration (NY)": ["EX-10.2.html"],
+        "Litigation (Travis County, TX)": ["tsla-ex102_486.htm.pdf"]
+      },
+      "outliers": [
+        {"document": "EX-10.2.html", "value": "Mediation then arbitration (NY)", "document_id": "doc-002", "confidence": 0.86},
+        {"document": "tsla-ex102_486.htm.pdf", "value": "Litigation (Travis County, TX)", "document_id": "doc-003", "confidence": 0.91}
+      ],
+      "document_values": {
+        "Supply Agreement.pdf": {"value": "Binding arbitration (AAA)", "confidence": 0.89, "document_id": "doc-001"},
+        "EX-10.2.html": {"value": "Mediation then arbitration (NY)", "confidence": 0.86, "document_id": "doc-002"},
+        "tsla-ex102_486.htm.pdf": {"value": "Litigation (Travis County, TX)", "confidence": 0.91, "document_id": "doc-003"}
+      },
+      "similarity_pairs": [
+        {"doc_a": "Supply Agreement.pdf", "doc_b": "EX-10.2.html", "similarity": 0.45},
+        {"doc_a": "Supply Agreement.pdf", "doc_b": "tsla-ex102_486.htm.pdf", "similarity": 0.22},
+        {"doc_a": "EX-10.2.html", "doc_b": "tsla-ex102_486.htm.pdf", "similarity": 0.28}
+      ]
+    },
+    {
+      "field_name": "Parties",
+      "is_unanimous": false,
+      "majority_value": "Tesla, Inc.; Panasonic Energy Co., Ltd.",
+      "majority_count": 1,
+      "total_documents": 3,
+      "unique_values": 3,
+      "value_groups": {
+        "Tesla, Inc.; Panasonic Energy Co., Ltd.": ["Supply Agreement.pdf"],
+        "Tesla, Inc.; LG Energy Solution": ["EX-10.2.html"],
+        "Tesla, Inc.; CATL": ["tsla-ex102_486.htm.pdf"]
+      },
+      "outliers": [
+        {"document": "EX-10.2.html", "value": "Tesla, Inc.; LG Energy Solution", "document_id": "doc-002", "confidence": 0.88},
+        {"document": "tsla-ex102_486.htm.pdf", "value": "Tesla, Inc.; CATL", "document_id": "doc-003", "confidence": 0.85}
+      ],
+      "document_values": {
+        "Supply Agreement.pdf": {"value": "Tesla, Inc.; Panasonic Energy Co., Ltd.", "confidence": 0.92, "document_id": "doc-001"},
+        "EX-10.2.html": {"value": "Tesla, Inc.; LG Energy Solution", "confidence": 0.88, "document_id": "doc-002"},
+        "tsla-ex102_486.htm.pdf": {"value": "Tesla, Inc.; CATL", "confidence": 0.85, "document_id": "doc-003"}
+      },
+      "similarity_pairs": [
+        {"doc_a": "Supply Agreement.pdf", "doc_b": "EX-10.2.html", "similarity": 0.62},
+        {"doc_a": "Supply Agreement.pdf", "doc_b": "tsla-ex102_486.htm.pdf", "similarity": 0.55},
+        {"doc_a": "EX-10.2.html", "doc_b": "tsla-ex102_486.htm.pdf", "similarity": 0.58}
+      ]
+    }
+  ],
+  "summary": {
+    "total_fields": 10,
+    "fields_with_differences": 7,
+    "unanimity_rate": 0.3
+  }
+}

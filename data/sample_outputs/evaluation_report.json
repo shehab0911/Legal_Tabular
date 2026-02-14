@@ -1,0 +1,24 @@
+{
+  "project_id": "sample-project-001",
+  "metrics": {
+    "total_fields": 30,
+    "matched_fields": 24,
+    "field_accuracy": 0.8,
+    "average_confidence": 0.847,
+    "coverage_percentage": 80.0
+  },
+  "field_results": [
+    {"field_name": "parties", "total": 3, "matched": 3, "accuracy": 1.0},
+    {"field_name": "effective_date", "total": 3, "matched": 3, "accuracy": 1.0},
+    {"field_name": "term", "total": 3, "matched": 2, "accuracy": 0.667},
+    {"field_name": "governing_law", "total": 3, "matched": 3, "accuracy": 1.0},
+    {"field_name": "payment_terms", "total": 3, "matched": 2, "accuracy": 0.667},
+    {"field_name": "dispute_resolution", "total": 3, "matched": 3, "accuracy": 1.0},
+    {"field_name": "confidentiality", "total": 3, "matched": 2, "accuracy": 0.667},
+    {"field_name": "liability_cap", "total": 3, "matched": 2, "accuracy": 0.667},
+    {"field_name": "termination", "total": 3, "matched": 2, "accuracy": 0.667},
+    {"field_name": "intellectual_property", "total": 3, "matched": 2, "accuracy": 0.667}
+  ],
+  "summary": "Extracted 30 fields with 80.0% accuracy",
+  "generated_at": "2026-02-11T10:35:00.000000"
+}

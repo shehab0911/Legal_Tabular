@@ -1,0 +1,11 @@
+Field Name,Field Type,Supply Agreement.pdf,EX-10.2.html,tsla-ex102_486.htm.pdf
+Parties,TEXT,"Tesla, Inc. and Panasonic Energy Co., Ltd.","Tesla, Inc. and LG Energy Solution","Tesla, Inc. and CATL"
+Effective Date,DATE,"January 1, 2024","March 15, 2024","June 1, 2023"
+Term,TEXT,"5 years from the Effective Date, with automatic renewal for successive 1-year periods","3 years with option to extend for 2 additional years","Initial term of 10 years"
+Governing Law,TEXT,State of Delaware,State of Delaware,State of Texas
+Payment Terms,TEXT,Net 30 days from invoice date,Net 45 days from delivery acceptance,Quarterly payments in advance
+Dispute Resolution,TEXT,Binding arbitration under the rules of the American Arbitration Association,"Mediation followed by binding arbitration in New York","Exclusive jurisdiction of the courts of Travis County, Texas"
+Confidentiality,TEXT,Mutual NDA; 5-year survival post-termination,Mutual confidentiality; 3-year survival,Standard mutual confidentiality provisions
+Liability Cap,CURRENCY,"$50,000,000",Limited to total fees paid in the preceding 12 months,N/A
+Termination,TEXT,Either party may terminate with 90 days written notice; immediate termination for material breach,60 days written notice; 30-day cure period for breach,180 days advance written notice required
+Intellectual Property,TEXT,"Each party retains ownership of its pre-existing IP; joint IP developed under the agreement shall be jointly owned",All IP developed under this agreement shall be owned by Tesla,"Background IP retained; foreground IP licensed to Tesla exclusively"

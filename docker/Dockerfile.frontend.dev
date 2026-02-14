@@ -1,0 +1,16 @@
+# Development Dockerfile for Frontend with hot reload
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY frontend/package*.json ./
+
+RUN npm install
+
+ENV VITE_API_URL=http://localhost:8000/api
+
+COPY frontend/ .
+
+EXPOSE 5173
+
+CMD ["node", "./node_modules/vite/bin/vite.js", "--host"]

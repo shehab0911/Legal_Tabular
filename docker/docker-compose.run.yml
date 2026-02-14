@@ -1,0 +1,174 @@
+version: "3.8"
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-legal_review}
+      POSTGRES_USER: ${POSTGRES_USER:-reviewer}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_secure_pw}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data_2:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-reviewer} -d ${POSTGRES_DB:-legal_review}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - legal_review_network_2
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data_2:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - legal_review_network_2
+    restart: unless-stopped
+
+  # Backend API
+  backend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.backend
+      args:
+        - BUILD_DATE=2024-01-01
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-reviewer}:${POSTGRES_PASSWORD:-changeme_secure_pw}@postgres:5432/${POSTGRES_DB:-legal_review}
+      REDIS_URL: redis://redis:6379/0
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      CORS_ORIGINS: http://localhost,http://localhost:5174,http://localhost:3001,http://frontend,https://${DOMAIN:-localhost}
+      WORKERS: 4
+      WORKER_CLASS: uvicorn.workers.UvicornWorker
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../backend/uploaded_files:/app/uploaded_files
+      - ../backend/logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - legal_review_network_2
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Legal Review Backend API 2"
+
+  # Frontend
+  frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.frontend
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8002/api}
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost:80/",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    networks:
+      - legal_review_network_2
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Legal Review Frontend 2"
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "5174:80"
+      - "4443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - nginx_logs_2:/var/log/nginx
+    depends_on:
+      - frontend
+      - backend
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--quiet",
+          "--tries=1",
+          "--spider",
+          "http://localhost/health",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - legal_review_network_2
+    restart: unless-stopped
+    labels:
+      - "com.example.description=Legal Review Nginx Proxy 2"
+
+  # pgAdmin (Database UI) - Optional
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL:-admin@example.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5051:80"
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data_2:/var/lib/pgadmin
+    networks:
+      - legal_review_network_2
+    restart: unless-stopped
+    profiles:
+      - debug
+
+volumes:
+  postgres_data_2:
+    driver: local
+  redis_data_2:
+    driver: local
+  pgadmin_data_2:
+    driver: local
+  nginx_logs_2:
+    driver: local
+
+networks:
+  legal_review_network_2:
+    driver: bridge
