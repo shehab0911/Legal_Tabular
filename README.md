@@ -98,97 +98,75 @@ DATABASE_URL=sqlite:///./legal_review.db
 | `/projects/{id}/reviews/pending` | GET | Pending reviews |
 | `/projects/{id}/extractions` | GET | List extractions |
 | `/projects/{id}/annotations` | GET | Project annotations |
-| `/projects/{id}/evaluate` | POST | Start evaluation |
-| `/projects/{id}/evaluation-report` | GET | Get eval report |
-| `/extractions/{id}/review` | PUT | Review extraction |
-| `/extractions/{id}/annotations` | GET | Field annotations |
-| `/field-templates` | GET/POST | List/create templates |
-| `/field-templates/{id}` | GET/PUT | Template CRUD |
-| `/annotations` | POST | Create annotation |
-| `/annotations/{id}` | PUT/DELETE | Update/delete annotation |
-| `/tasks/{id}` | GET | Task status |
 
-## Testing
+## System Screenshots
 
+### Project Management
+![Project List](system%20picture/Project%20list_First%20One.png)
+*Main project dashboard showing all legal document review projects*
+
+### Document Upload & Extraction
+![Upload and Extraction](system%20picture/Upload%20Documents%20and%20Extraction_2nd.png)
+*Upload multiple documents and initiate AI-powered field extraction*
+
+### Comparison Table View
+![Comparison Table](system%20picture/Comparison%20Table_2nd.png)
+*Side-by-side field comparison with confidence scores and citations*
+
+### Citation Display
+![Citation System](system%20picture/Citation.png)
+*Detailed citation view showing source text, page numbers, and relevance scores*
+
+### Diff Highlighting
+![Diff Highlighting](system%20picture/Diff_Highlighting_4th.png)
+*Cross-document difference detection with outlier identification*
+
+### Review Workflow
+![Review Section](system%20picture/Review%20Section_5th.png)
+*Field-by-field review with approve/reject/manual update options*
+
+### Annotations
+![Annotation System](system%20picture/Annotation_6th.png)
+*Collaborative review comments and risk flags on extracted fields*
+
+### Evaluation Reports
+![Evaluation](system%20picture/Evaluation_7th.png)
+*Extraction quality metrics and field-level accuracy analysis*
+
+### Template Management
+![Templates](system%20picture/Reextraction%20and%20Template_8th.png)
+*Field template creation and management with re-extraction capabilities*
+
+## Development
+
+### Backend Development
 ```bash
 cd backend
-pytest -v  # Run all 111+ tests
+pip install -r requirements-dev.txt  # includes testing dependencies
+python -m pytest tests/            # run tests
+python -m black src/               # code formatting
+python -m ruff src/                # linting
 ```
 
-### Test Coverage
-- **Unit Tests**: Repository, document parser, field extractor
-- **Integration Tests**: All API endpoints, full workflows
-- **Workflow Tests**: End-to-end document ingestion and extraction
- 
-### QA Smoke Test
- 
+### Frontend Development
 ```bash
-# Runs a minimal end-to-end verification (upload → extract → table)
-python smoke_test.py
+cd frontend
+npm run lint                       # ESLint
+npm run type-check                 # TypeScript checking
+npm run build                      # Production build
 ```
- 
-The script exercises:
-- Project creation and document upload
-- Extraction trigger and task status polling
-- Retrieval of the comparison table
 
-## Docker
- 
+## Deployment
+
+### Docker Production
 ```bash
 cd docker
-# Standard
-docker-compose up -d
-
-# Development
-docker-compose -f docker-compose.dev.yml up -d
-
-# Run a unique instance to avoid port/name conflicts
-# Uses custom compose with distinct ports and an isolated project name
-docker-compose -f docker-compose.run.yml -p legal_tabular_2 up -d
+docker-compose -f docker-compose.yml up -d
 ```
- 
-Ports for the unique instance:
-- Backend: http://localhost:8002
-- Frontend: http://localhost:5174
-- Postgres: localhost:5434
-- Redis: localhost:6380
- 
-Data volume for the unique instance:
-- postgres_data_2 (separate from any other instance)
 
-## Tech Stack
-
-- **Backend**: FastAPI, SQLAlchemy, Pydantic, Groq SDK, Google Generative AI
-- **Frontend**: React 18, TypeScript, Vite, TailwindCSS, Zustand, Axios
-- **Database**: SQLite (dev), PostgreSQL (production)
-- **AI/LLM**: Groq (Llama 3.3 70B), Google Gemini 1.5 Flash, heuristic fallback
-- **Export**: openpyxl (Excel), csv (CSV), pandas (data processing)
-
-## Sample Data
-
-The `data/` directory contains sample legal documents for testing:
-- Tesla SEC filings (HTML, PDF)
-- Supply agreements (PDF)
-- Contract exhibits (HTML)
-
-## Screenshots
-
-Below are screenshots captured from the running system as proof of the implemented features:
-## Project List
-![Project List](system%20picture/Project%20list_First%20One.png)
-## Document Upload & Extraction
-![Document Upload & Extraction](system%20picture/Upload%20Documents%20and%20Extraction_2nd.png)
-## Comparison Table
-![Comparison Table](system%20picture/Comparison%20Table_2nd.png)
-## Diff Highlighting
-![Diff Highlighting](system%20picture/Diff_Highlighting_4th.png)
-## Review Section
-![Review Section](system%20picture/Review%20Section_5th.png)
-## Annotations
-![Annotations](system%20picture/Annotation_6th.png)
-## Evaluation
-![Evaluation](system%20picture/Evaluation_7th.png)
+### Manual Deployment
+See [docs/deployment.md](docs/deployment.md) for detailed deployment instructions.
 
 ## License
 
-Proprietary - All rights reserved.
+MIT License - see [LICENSE](LICENSE) file for details.

@@ -3,8 +3,44 @@ import { Download, AlertCircle, FileSpreadsheet } from "lucide-react";
 import toast from "react-hot-toast";
 import { comparisonAPI } from "../services/api";
 
+export type Citation = {
+  citation_text: string;
+  page_number?: number;
+  section_title?: string;
+  relevance_score: number;
+};
+
+export type CellResult = {
+  id: string;
+  extracted_value?: string;
+  normalized_value?: string;
+  confidence_score?: number;
+  status?: string;
+  citations?: Citation[];
+};
+
+export type DocumentEntry = {
+  id: string;
+  filename: string;
+  file_type?: string;
+};
+
+export type TableRow = {
+  field_name: string;
+  field_type: string;
+  document_results: Record<string, CellResult>;
+};
+
+export type TableData = {
+  project_id: string;
+  document_count: number;
+  row_count: number;
+  documents: DocumentEntry[];
+  rows: TableRow[];
+};
+
 interface ComparisonTableViewProps {
-  data: any;
+  data?: TableData | null;
   projectId: string;
 }
 
@@ -13,6 +49,9 @@ const ComparisonTableView: React.FC<ComparisonTableViewProps> = ({
   projectId,
 }) => {
   const [exporting, setExporting] = useState(false);
+  
+  // Safe access to documents
+  const documents = (data && Array.isArray(data.documents)) ? data.documents : [];
 
   const handleExportCSV = async () => {
     setExporting(true);
@@ -27,6 +66,7 @@ const ComparisonTableView: React.FC<ComparisonTableViewProps> = ({
       window.URL.revokeObjectURL(url);
       toast.success("Table exported to CSV");
     } catch (error) {
+      console.error(error);
       toast.error("Failed to export CSV");
     } finally {
       setExporting(false);
@@ -54,6 +94,7 @@ const ComparisonTableView: React.FC<ComparisonTableViewProps> = ({
       window.URL.revokeObjectURL(url);
       toast.success("Table exported to Excel");
     } catch (error) {
+      console.error(error);
       toast.error("Failed to export Excel");
     } finally {
       setExporting(false);
@@ -107,18 +148,18 @@ const ComparisonTableView: React.FC<ComparisonTableViewProps> = ({
               <th className="border border-gray-300 px-4 py-2 text-left font-semibold text-gray-900">
                 Type
               </th>
-              {data.documents.map((doc: any) => (
+              {documents.map((doc) => (
                 <th
                   key={doc.id}
                   className="border border-gray-300 px-4 py-2 text-left font-semibold text-gray-900 max-w-xs"
                 >
-                  <div className="truncate">{doc.filename}</div>
+                  <div className="truncate" title={doc.filename}>{doc.filename}</div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {data.rows.map((row: any, idx: number) => (
+            {data.rows.map((row, idx) => (
               <tr
                 key={idx}
                 className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
@@ -129,11 +170,11 @@ const ComparisonTableView: React.FC<ComparisonTableViewProps> = ({
                 <td className="border border-gray-300 px-4 py-3 text-sm text-gray-600">
                   {row.field_type}
                 </td>
-                {data.documents.map((doc: any) => {
-                  const result = row.document_results[doc.id] || {};
-                  const confidence = result.confidence_score || 0;
-                  const value = result.extracted_value || "N/A";
-                  const citations = Array.isArray(result.citations)
+                {documents.map((doc) => {
+                  const result = row.document_results[doc.id];
+                  const confidence = result?.confidence_score ?? 0;
+                  const value = result?.extracted_value ?? "N/A";
+                  const citations: Citation[] = Array.isArray(result?.citations)
                     ? result.citations
                     : [];
 
@@ -150,12 +191,10 @@ const ComparisonTableView: React.FC<ComparisonTableViewProps> = ({
                           </summary>
                           <div className="mt-2 border rounded bg-gray-50 p-2">
                             <ul className="space-y-2">
-                              {citations.slice(0, 3).map((c: any, i: number) => (
+                              {citations.slice(0, 3).map((c, i) => (
                                 <li key={i} className="text-xs text-gray-800">
                                   <div className="font-medium">
-                                    {c.section_title
-                                      ? c.section_title
-                                      : "Citation"}
+                                    {c.section_title || "Citation"}
                                     {typeof c.page_number === "number" && (
                                       <span className="ml-1 text-gray-600">
                                         • p.{c.page_number}
